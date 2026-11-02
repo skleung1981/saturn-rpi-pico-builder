@@ -26,27 +26,27 @@ pipeline {
                     def fullImageName = "${registry}/${imageName}"
                     def imageTag = "${fullImageName}:${cleanVersion}"
                     def latestTag = "${fullImageName}:latest"
-                }
 
-                withCredentials([usernamePassword(credentialsId: 'nexus-cicd-admin',
+                    withCredentials([usernamePassword(credentialsId: 'nexus-cicd-admin',
                                  usernameVariable: 'nexus_user',
                                  passwordVariable: 'nexus_password')]) {
-                    sh '''
-                        mkdir -p "${WORKSPACE}/.docker-config"
-                        export DOCKER_CONFIG="${WORKSPACE}/.docker-config"
-                        echo "$nexus_password" | docker login ''' + registry + ''' -u "$nexus_user" --password-stdin
+                        sh '''
+                            mkdir -p "${WORKSPACE}/.docker-config"
+                            export DOCKER_CONFIG="${WORKSPACE}/.docker-config"
+                            echo "$nexus_password" | docker login ''' + registry + ''' -u "$nexus_user" --password-stdin
 
-                        docker build \
-                            -t ''' + imageTag + ''' \
-                            -t ''' + latestTag + ''' \
-                            .
+                            docker build \
+                                -t ''' + imageTag + ''' \
+                                -t ''' + latestTag + ''' \
+                                .
 
-                        docker push ''' + imageTag + '''
-                        docker push ''' + latestTag + '''
+                            docker push ''' + imageTag + '''
+                            docker push ''' + latestTag + '''
 
-                        rm -rf "${WORKSPACE}/.docker-config"
-                        docker rmi ''' + imageTag + ' ' + latestTag + ''' || true
-                    '''
+                            rm -rf "${WORKSPACE}/.docker-config"
+                            docker rmi ''' + imageTag + ' ' + latestTag + ''' || true
+                        '''
+                    }
                 }
             }
         }
