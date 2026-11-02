@@ -1,5 +1,7 @@
 # saturn-rpi-pico-builder
 
+**This repo is originally from my local CI/CD environment using forgejo, this one you're viewing is the mirror version in GitHub.**
+
 It is a project that builds docker image 'saturn-rpi-pico-builder' for RPI pico/pico2 project using Pico SDK.
 
 ## Scope
